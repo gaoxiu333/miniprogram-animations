@@ -170,7 +170,7 @@ export default function Setup() {
   );
 }
 
-export function RiMiniProgramFill(props: SVGProps<SVGSVGElement>) {
+function RiMiniProgramFill(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
