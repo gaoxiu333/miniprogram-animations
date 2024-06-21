@@ -1,17 +1,40 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./bubbles.scss";
 import { IphoneMokup } from "../components/IphoneMokup";
-import { Card, CardBody } from "@nextui-org/react";
+import { Button, Card, CardBody, Divider } from "@nextui-org/react";
 
 export default function Setup() {
-  const [primaryStart, setPrimaryStart] = useState("#6c00a2");
-  const [primaryEnd, setPrimaryEnd] = useState("#001152");
+  const [gradientBg1, setGradientBg1] = useState("#6c00a2");
+  const [gradientBg2, setGradientBg2] = useState("#001152");
+  const [gradientBg3, setGradientBg3] = useState("#754322");
   const [g1color, setG1color] = useState("#1271ff");
   const [g2color, setG2color] = useState("#dd4aff");
   const [g3color, setG3color] = useState("#64dcff");
   const [g4color, setG4color] = useState("#c83232");
   const [g5color, setG5color] = useState("#b4b432");
+  useEffect(() => {}, []);
+
+  // 提交
+  const submit = () => {
+    fetch("/theme", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        g1color,
+        g2color,
+        g3color,
+        g4color,
+        g5color,
+        gradientBg1: gradientBg1,
+        gradientBg2: gradientBg2,
+        gradientBg3: gradientBg3,
+      }),
+    });
+    console.log("提交");
+  };
 
   return (
     <div className="container mx-auto py-[20px]">
@@ -25,8 +48,10 @@ export default function Setup() {
                   className="relative h-full w-full rounded-2xl overflow-hidden"
                   style={
                     {
-                      "--color-bg1": primaryStart,
-                      "--color-bg2": primaryEnd,
+                      "--color-bg1": gradientBg1,
+                      "--color-bg2": gradientBg2,
+                      "--color-bg3": gradientBg3,
+
                       "--color1": hexToRgb(g1color),
                       "--color2": hexToRgb(g2color),
                       "--color3": hexToRgb(g3color),
@@ -79,26 +104,38 @@ export default function Setup() {
                         htmlFor="primary-start"
                         className="text-default-400"
                       >
-                        渐变开始：
+                        渐变1：
                       </label>
                       <input
                         className=" cursor-pointer"
                         id="primary-start"
                         type="color"
-                        value={primaryStart}
-                        onChange={(e) => setPrimaryStart(e.target.value)}
+                        value={gradientBg1}
+                        onChange={(e) => setGradientBg1(e.target.value)}
                       />
                     </div>
                     <div className="flex flex-row">
                       <label htmlFor="primary-end" className="text-default-400">
-                        渐变结束：
+                        渐变2：
                       </label>
                       <input
                         id="primary-end"
                         className="cursor-pointer"
                         type="color"
-                        value={primaryEnd}
-                        onChange={(e) => setPrimaryEnd(e.target.value)}
+                        value={gradientBg2}
+                        onChange={(e) => setGradientBg2(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex flex-row">
+                      <label htmlFor="primary-end" className="text-default-400">
+                        渐变3：
+                      </label>
+                      <input
+                        id="primary-end"
+                        className="cursor-pointer"
+                        type="color"
+                        value={gradientBg3}
+                        onChange={(e) => setGradientBg3(e.target.value)}
                       />
                     </div>
                   </div>
@@ -152,6 +189,17 @@ export default function Setup() {
                       onChange={(e) => setG5color(e.target.value as any)}
                     />
                   </div>
+                </section>
+                <section>
+                  <Divider className="my-4" />
+                  <Button
+                    fullWidth
+                    type="submit"
+                    color="primary"
+                    onClick={submit}
+                  >
+                    提交
+                  </Button>
                 </section>
               </div>
             </div>
