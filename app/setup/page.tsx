@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import "./bubbles.scss";
 import { IphoneMokup } from "../components/IphoneMokup";
 import { Button, Card, CardBody, Divider } from "@nextui-org/react";
+import { Toaster, toast } from "sonner";
 
 export default function Setup() {
   const [gradientBg1, setGradientBg1] = useState("#6c00a2");
@@ -13,10 +14,12 @@ export default function Setup() {
   const [g3color, setG3color] = useState("#64dcff");
   const [g4color, setG4color] = useState("#c83232");
   const [g5color, setG5color] = useState("#b4b432");
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {}, []);
 
   // 提交
   const submit = () => {
+    setIsLoading(true)
     fetch("/theme", {
       method: "POST",
       headers: {
@@ -32,12 +35,18 @@ export default function Setup() {
         gradientBg2: gradientBg2,
         gradientBg3: gradientBg3,
       }),
-    });
-    console.log("提交");
+    }).then((res) => {
+      toast.success("主题设置成功")
+    }).catch((err) => {
+      toast.error("主题设置失败")
+    }).finally(() => {
+      setIsLoading(false)
+    })
   };
 
   return (
     <div className="container mx-auto py-[20px]">
+      <Toaster />
       <h1 className="text-2xl py-6 pb-10">Robo 主题配置</h1>
       <Card>
         <CardBody>
@@ -197,6 +206,7 @@ export default function Setup() {
                     type="submit"
                     color="primary"
                     onClick={submit}
+                    isLoading={isLoading}
                   >
                     提交
                   </Button>
